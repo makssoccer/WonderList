@@ -1,75 +1,87 @@
 package org.example;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 
 import static org.junit.Assert.assertEquals;
 
 public class WonderListTest {
+    public Wonder<String> wonderList;
 
+    @Before
+    public void setUp() {
+        wonderList = new WonderList<>();
+        wonderList.add("Banana");
+        wonderList.add("Orange");
+    }
 
     @Test
     public void testAddAndGet() {
-        Wonder<String> wonderList = new WonderList<>();
-        wonderList.add("Element1");
-        wonderList.add("Element2");
-        wonderList.add("Element3");
+        wonderList.add("Watermelon");
 
-        assertEquals("Element1", wonderList.get(0));
-        assertEquals("Element2", wonderList.get(1));
-        assertEquals("Element3", wonderList.get(2));
+        assertEquals("Banana", wonderList.get(0));
+        assertEquals("Orange", wonderList.get(1));
+        assertEquals("Watermelon", wonderList.get(2));
     }
 
     @Test
     public void testAddByIndex() {
-        Wonder<String> wonderList = new WonderList<>();
-        wonderList.add("Element1");
-        wonderList.add("Element3");
+        wonderList.add(1, "Apple");
 
-        wonderList.add(1, "Element2");
-
-        assertEquals("Element1", wonderList.get(0));
-        assertEquals("Element2", wonderList.get(1));
-        assertEquals("Element3", wonderList.get(2));
+        assertEquals("Banana", wonderList.get(0));
+        assertEquals("Apple", wonderList.get(1));
+        assertEquals("Orange", wonderList.get(2));
     }
 
     @Test
     public void testRemove() {
-        Wonder<String> wonderList = new WonderList<>();
-        wonderList.add("Element1");
-        wonderList.add("Element2");
-        wonderList.add("Element3");
+        wonderList.remove("Banana");
 
-        wonderList.remove("Element2");
+        assertEquals("Orange", wonderList.get(0));
+    }
 
-        assertEquals("Element1", wonderList.get(0));
-        assertEquals("Element3", wonderList.get(1));
+    @Test
+    public void testSize() {
+        assertEquals(2, wonderList.size());
     }
 
     @Test
     public void testClear() {
-        Wonder<String> wonderList = new WonderList<>();
-        wonderList.add("Element1");
-        wonderList.add("Element2");
-        wonderList.add("Element3");
-
         wonderList.clear();
 
         assertEquals(0, wonderList.size());
     }
+    @Test
+    public void testSet() {
+        wonderList.set(0, "Apple");
+        wonderList.set(1, "Kiwi");
+
+        assertEquals("Apple", wonderList.get(0));
+        assertEquals("Kiwi", wonderList.get(1));
+    }
 
     @Test
     public void testQuickSort() {
-        Wonder<String> wonderList = new WonderList<>();
-        wonderList.add("Banana");
+        wonderList.add("Watermelon");
         wonderList.add("Apple");
-        wonderList.add("Orange");
+        wonderList.add("Kiwi");
+        wonderList.add("Persimmon");
+        wonderList.add("Mandarin");
+        wonderList.add("Lemon");
+        wonderList.add("Grapefruit");
 
-        wonderList.quickSort();
+        Sort<String> quickSort = new QuickSort<>();
+        quickSort.sort(wonderList);
 
         assertEquals("Apple", wonderList.get(0));
         assertEquals("Banana", wonderList.get(1));
-        assertEquals("Orange", wonderList.get(2));
+        assertEquals("Grapefruit", wonderList.get(2));
+        assertEquals("Kiwi", wonderList.get(3));
+        assertEquals("Lemon", wonderList.get(4));
+        assertEquals("Mandarin", wonderList.get(5));
+        assertEquals("Orange", wonderList.get(6));
+        assertEquals("Persimmon", wonderList.get(7));
+        assertEquals("Watermelon", wonderList.get(8));
     }
 
 

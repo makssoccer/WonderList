@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.Arrays;
 
 /**
@@ -32,26 +33,44 @@ public class WonderList<T extends Comparable<T>> implements Wonder<T> {
         }
     }
 
+    /**
+     * Adds an element to the end of the list.
+     *
+     * @param element the element to be added.
+     */
     @Override
     public void add(T element) {
         ensureCapacity();
         elements[size++] = element;
     }
 
+    /**
+     * Retrieves the element at a specified index in the list.
+     *
+     * @param index   the index of the element to retrieve.
+     * @param element the element to be added.
+     * @return the element at the specified index.
+     * @throws IndexOutOfBoundsException if the index is out of range.
+     */
     @Override
     public void add(int index, T element) {
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-
         ensureCapacity();
-
-        // Сдвигаем элементы вправо, чтобы освободить место для нового элемента
+        // Move the elements to the right to make room for a new element
         System.arraycopy(elements, index, elements, index + 1, size - index);
         elements[index] = element;
         size++;
     }
 
+    /**
+     * Retrieves the element at a specified index in the list.
+     *
+     * @param index the index of the element to retrieve.
+     * @return the element at the specified index.
+     * @throws IndexOutOfBoundsException if the index is out of range.
+     */
     @Override
     public T get(int index) {
         if (index < 0 || index >= size) {
@@ -60,6 +79,11 @@ public class WonderList<T extends Comparable<T>> implements Wonder<T> {
         return (T) elements[index];
     }
 
+    /**
+     * Removes the first occurrence of the specified element from the list.
+     *
+     * @param element the element to be removed.
+     */
     @Override
     public void remove(T element) {
         for (int i = 0; i < size; i++) {
@@ -70,6 +94,9 @@ public class WonderList<T extends Comparable<T>> implements Wonder<T> {
         }
     }
 
+    /**
+     * Clears the entire list, removing all elements.
+     */
     @Override
     public void clear() {
         for (int i = 0; i < size; i++) {
@@ -82,109 +109,44 @@ public class WonderList<T extends Comparable<T>> implements Wonder<T> {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-
-        // Сдвигаем элементы влево, чтобы удалить элемент по указанному индексу
+        // Move the elements to the left to delete the element at the specified index
         System.arraycopy(elements, index + 1, elements, index, size - index - 1);
-        elements[--size] = null; // Освобождаем последний элемент
+        elements[--size] = null; // Releasing the last element
     }
 
+    /**
+     * Increases the capacity of this ArrayList instance, if necessary.
+     */
+    private void ensureCapacity() {
+        if (size == elements.length) {
+            int newCapacity = elements.length * 2;
+            elements = Arrays.copyOf(elements, newCapacity);
+        }
+    }
+
+    /**
+     * Returns the current size (number of elements) in the list.
+     *
+     * @return the size of the list.
+     */
     @Override
     public int size() {
         return size;
     }
 
-    /////////////////////////////////Быстрая сортировка
+    /**
+     * Replaces the element at the specified position in this list with the specified element.
+     *
+     * @param index – index of the element to replace
+     * @param value to be stored at the specified position
+     */
     @Override
-    public void quickSort() {
-        if (size > 1) {
-            quickSort(0, size - 1);
-        }
-    }
-
-    private void quickSort(int low, int high) {
-        if (low < high) {
-            int pivotIndex = partition(low, high);
-            quickSort(low, pivotIndex - 1);
-            quickSort(pivotIndex + 1, high);
-        }
-    }
-
-    private int partition(int low, int high) {
-        T pivot = get(high);
-        int i = low - 1;
-
-        for (int j = low; j < high; j++) {
-            if (get(j).compareTo(pivot) <= 0) {
-                i++;
-                swap(i, j);
-            }
-        }
-
-        swap(i + 1, high);
-        return i + 1;
-    }
-
-    private void swap(int i, int j) {
-        T temp = get(i);
-        set(i, get(j));
-        set(j, temp);
-    }
-
-    private void set(int index, T value) {
+    public void set(int index, T value) {
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
         elements[index] = value;
     }
-
-    private void ensureCapacity() {
-        if (size == elements.length) {
-            int newCapacity = elements.length * 2;
-            elements = Arrays.copyOf(elements, newCapacity);// Копируем существующий массив и величиваем его размер
-        }
-    }
-
-////////////////////////////////////////////Сортировка слянием
-    @Override
-    public void mergeSort() {
-        if (size > 1) {
-            T[] tempArray = (T[]) Arrays.copyOf(elements, size);
-            mergeSort(tempArray, 0, size - 1);
-        }
-    }
-
-    private void mergeSort(T[] tempArray, int left, int right) {
-        if (left < right) {
-            int mid = (left + right) / 2;
-            mergeSort(tempArray, left, mid);
-            mergeSort(tempArray, mid + 1, right);
-            merge(tempArray, left, mid, right);
-        }
-    }
-
-    private void merge(T[] tempArray, int left, int mid, int right) {
-        int i = left;
-        int j = mid + 1;
-        int k = left;
-
-        while (i <= mid && j <= right) {
-            if (tempArray[i].compareTo(tempArray[j]) <= 0) {
-                elements[k++] = tempArray[i++];
-            } else {
-                elements[k++] = tempArray[j++];
-            }
-        }
-
-        while (i <= mid) {
-            elements[k++] = tempArray[i++];
-        }
-
-        while (j <= right) {
-            elements[k++] = tempArray[j++];
-        }
-    }
-///////////////////////////////////////////////////
-
 }
 
 
