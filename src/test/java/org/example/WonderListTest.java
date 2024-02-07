@@ -19,7 +19,7 @@ public class WonderListTest {
     public void testAddAndGet() {
         wonderList.add("Watermelon");
 
-        assertEquals("Banana", wonderList.get(0));
+        assertEquals("Banana", wonderList.get(0)); // несколько ассертов в assertALl всегда
         assertEquals("Orange", wonderList.get(1));
         assertEquals("Watermelon", wonderList.get(2));
     }
@@ -83,6 +83,5 @@ public class WonderListTest {
         assertEquals("Persimmon", wonderList.get(7));
         assertEquals("Watermelon", wonderList.get(8));
     }
-
 
 }

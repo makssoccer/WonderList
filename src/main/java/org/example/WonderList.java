@@ -10,6 +10,7 @@ import java.util.Arrays;
 public class WonderList<T extends Comparable<T>> implements Wonder<T> {
 
     private static final int DEFAULT_CAPACITY = 10;
+    public static final String MSG_PATTERN = "Illegal Capacity: %d";
     private Object[] elements;
     int size;
 
@@ -28,8 +29,7 @@ public class WonderList<T extends Comparable<T>> implements Wonder<T> {
         if (initialCapacity > 0) {
             this.elements = new Object[initialCapacity];
         } else {
-            throw new IllegalArgumentException("Illegal Capacity: " +
-                    initialCapacity);
+            throw new IllegalArgumentException(String.format(MSG_PATTERN,  initialCapacity)); // так лучше
         }
     }
 
